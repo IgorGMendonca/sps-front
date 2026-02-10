@@ -1,8 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
+import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
 import Users from "./pages/Users";
-import UserEdit, { userLoader } from "./pages/UserEdit";
+import UserEdit from "./pages/UserEdit";
 
 const router = createBrowserRouter([
   {
@@ -10,13 +12,28 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
+    path: "/login",
+    element: <SignIn />,
+  },
+  {
     path: "/users",
-    element: <Users />,
+    element: (
+      <ProtectedRoute>
+        <Users />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/users/:userId",
-    element: <UserEdit />,
-    loader: userLoader,
+    element: (
+      <ProtectedRoute>
+        <UserEdit />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
   },
 ]);
 

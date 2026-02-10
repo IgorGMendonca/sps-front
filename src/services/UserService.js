@@ -1,22 +1,33 @@
-import axios from "axios";
+import api from "./api";
 
+/**
+ * Serviço de usuários. Todas as requisições usam o token no header (api.js).
+ * API esperada: GET/POST /users, GET/PUT/DELETE /users/:id
+ */
 class UserService {
   async list() {
-    const users = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users`);
-    return users;
+    const { data } = await api.get("/users");
+    return data;
   }
+
   async get(id) {
-    throw new Error("Not implemented");
+    const { data } = await api.get(`/users/${id}`);
+    return data;
   }
-  async create(data) {
-    throw new Error("Not implemented");
+
+  async create(payload) {
+    const { data } = await api.post("/users", payload);
+    return data;
   }
+
+  async update(id, payload) {
+    const { data } = await api.put(`/users/${id}`, payload);
+    return data;
+  }
+
   async delete(id) {
-    throw new Error("Not implemented");
-  }
-  async update(id, data) {
-    throw new Error("Not implemented");
+    await api.delete(`/users/${id}`);
   }
 }
 
-export default UserService;
+export default new UserService();
